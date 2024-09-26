@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 class LoginInputField extends StatelessWidget {
   final String hintText;
   final bool obscureText;
+  final TextEditingController controller;
 
   LoginInputField({
       required this.hintText,
-      this.obscureText = false
+      this.obscureText = false,
+      required this.controller
   });
 
   Widget build(BuildContext context) {
@@ -16,6 +18,7 @@ class LoginInputField extends StatelessWidget {
           border: Border(bottom: BorderSide(color: Colors.grey.shade200))
       ),
       child: TextField(
+        controller: controller,
         obscureText: this.obscureText,
         decoration: InputDecoration(
             hintText: this.hintText,
