@@ -1,8 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_with_c/models/bad_request.dart';
 import 'package:flutter_with_c/models/user.dart';
 import '/views/atoms/Input_field.dart';
+import '/views/atoms/alert.dart';
 import '/services/api_service.dart';
-
 void main() => runApp(
   MaterialApp(
     debugShowCheckedModeBanner: false,
@@ -74,8 +77,17 @@ class HomePage extends StatelessWidget {
                         ),
                         child: Column(
                           children: <Widget>[
-                            LoginInputField(hintText: "Username | Email",controller: userNameController,),
-                            LoginInputField(hintText: "Password", obscureText: true,controller: passwordController,)
+                            LoginInputField(
+                              hintText: "Username | Email",
+                              controller: userNameController,
+                              defaultValue: "administrator",
+                            ),
+                            LoginInputField(
+                              hintText: "Password",
+                              obscureText: true,
+                              controller: passwordController,
+                              defaultValue: "11235811",
+                            )
                           ],
                         ),
                       ),
@@ -111,13 +123,48 @@ class HomePage extends StatelessWidget {
     final username = userNameController.text;
     final password = passwordController.text;
 
-    final user = User(username: username, password: password,station_id: 4);
+    final user = User(username: username, password: password,station_id: 10);
+    final res = await apiService.login(user);
+    final loginData = jsonDecode(res.body);
     try{
-      final res = await apiService.login(user);
-      print(res);
+      print(res.statusCode);
+      if(res.statusCode == 200){
+        final loginResponse = LoginResponse.fromJson(loginData);
+        print("Login as :");
+        print(loginResponse.data?.name);
+        print(loginResponse.data?.username);
+        _showAlert(context, "Success!", loginResponse.message ?? "Success");
+      }
+      if(res.statusCode == 400){
+        final loginResponse = BadRequest.fromJson(loginData);
+        _showAlert(context, "Failed!", loginResponse.message ?? "Failed");
+      }
     }catch(e){
       print('Error $e');
+      print(res.statusCode);
+      _showAlert(context, "Error!", 'Error $e');
     }
+  }
+
+  void _showAlert(BuildContext context, String title, String description) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Colors.green.shade900, // Set the background color
+          title: Text(title),
+          content: Text(description),
+          actions: <Widget>[
+            TextButton(
+              child: Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 }
 

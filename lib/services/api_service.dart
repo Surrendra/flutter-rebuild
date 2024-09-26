@@ -21,12 +21,6 @@ class ApiService{
       },
       body: jsonEncode(user.toJson())
     );
-    if(response.statusCode == 200){
-      return response;
-    }else{
-      // print response to log
-      print(response.body);
-      throw Exception('Failed to login');
-    }
+    return response;
   }
 }
