@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '/views/atoms/Input_field.dart';
 
 void main() => runApp(
   MaterialApp(
@@ -68,32 +69,8 @@ class HomePage extends StatelessWidget {
                             ),
                             child: Column(
                               children: <Widget>[
-                                Container(
-                                  padding: EdgeInsets.all(10),
-                                  decoration: BoxDecoration(
-                                    border: Border(bottom: BorderSide(color: Colors.grey.shade200))
-                                  ),
-                                  child: TextField(
-                                    decoration: InputDecoration(
-                                      hintText: "Email or Usernaname",
-                                      hintStyle: TextStyle(color: Colors.grey),
-                                      border: InputBorder.none
-                                    ),
-                                  ),
-                                ),
-                                Container(
-                                  padding: EdgeInsets.all(10),
-                                  decoration: BoxDecoration(
-                                      border: Border(bottom: BorderSide(color: Colors.grey.shade200))
-                                  ),
-                                  child: TextField(
-                                    decoration: InputDecoration(
-                                        hintText: "Password",
-                                        hintStyle: TextStyle(color: Colors.grey),
-                                        border: InputBorder.none
-                                    ),
-                                  ),
-                                ),
+                                LoginInputField(hintText: "Username | Email"),
+                                LoginInputField(hintText: "Password",obscureText: true,)
                               ],
                             ),
                           ),
@@ -111,18 +88,6 @@ class HomePage extends StatelessWidget {
                             child: Text("Login",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
                           ),
                         ),
-                        SizedBox(height: 30,),
-                        Row(
-                          children:<Widget> [
-                            Expanded(child: Container(
-                              height: 50,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(50),
-                                color: Colors.blue,
-                              ),
-                            ))
-                          ],
-                        )
                       ],
                     ),
                   ),
